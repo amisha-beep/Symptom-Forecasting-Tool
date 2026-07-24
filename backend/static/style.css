@@ -1,0 +1,545 @@
+/* ==========================
+   GOOGLE FONT
+========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* ==========================
+   BODY
+========================== */
+body{
+    min-height:100vh;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,214,232,0.9),
+        rgba(217,255,140,0.9)
+    ),
+    url("images/background.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    overflow-x:hidden;
+}
+
+/* ==========================
+   FLOATING MEDICAL ICONS
+========================== */
+.floating-icon{
+    position:fixed;
+    font-size:50px;
+    opacity:0.12;
+    z-index:0;
+    animation:float 6s ease-in-out infinite;
+}
+
+.stethoscope{
+    top:10%;
+    left:5%;
+}
+
+.syringe{
+    bottom:15%;
+    right:8%;
+}
+
+.heart{
+    top:20%;
+    right:15%;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-20px);}
+    100%{transform:translateY(0);}
+}
+
+/* ==========================
+   AUTH PAGE
+========================== */
+.auth-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.auth-card{
+
+    width:100%;
+    max-width:450px;
+
+    background:rgba(255,255,255,0.22);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.35);
+
+    border-radius:30px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.15);
+}
+
+.auth-card h1{
+    color:#ff4f96;
+    margin-bottom:10px;
+}
+
+.auth-card p{
+    color:#555;
+    margin-bottom:20px;
+}
+
+.auth-card input{
+
+    width:100%;
+
+    padding:15px;
+
+    margin:10px 0;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.6);
+}
+
+.auth-card input:focus{
+    outline:none;
+}
+
+.message{
+    margin-top:10px;
+    font-size:14px;
+    font-weight:600;
+}
+
+/* ==========================
+   SIGN IN / SIGN UP TABS
+========================== */
+.auth-tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.auth-tabs button{
+    flex:1;
+}
+
+.active-tab{
+    background:
+    linear-gradient(
+        135deg,
+        #ffb6c1,
+        #d9ff8c
+    ) !important;
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+.container{
+
+    display:none;
+
+    max-width:1200px;
+
+    margin:30px auto;
+
+    padding:30px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,0.2);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.3);
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.15);
+}
+
+/* ==========================
+   HEADER
+========================== */
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    color:#ff4f96;
+    margin-bottom:10px;
+}
+
+.header p{
+    color:#444;
+}
+
+.header-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+/* ==========================
+   GLASS MORPHISM BUTTONS
+========================== */
+.glass-btn{
+
+    padding:12px 22px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,182,193,0.55),
+        rgba(217,255,140,0.55)
+    );
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.35);
+
+    color:#222;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s ease;
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.08);
+}
+
+.glass-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 12px 25px rgba(0,0,0,0.15);
+}
+
+.logout-btn{
+    color:#e11d48;
+}
+
+/* ==========================
+   STATS
+========================== */
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:20px;
+
+    margin-bottom:30px;
+}
+
+.stat-card{
+
+    text-align:center;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.25);
+
+    backdrop-filter:blur(12px);
+}
+
+.stat-card h3{
+    color:#ff4f96;
+    font-size:26px;
+}
+
+.stat-card p{
+    color:#555;
+}
+
+/* ==========================
+   FORM
+========================== */
+form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input[type="text"],
+input[type="number"]{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.6);
+}
+
+input:focus{
+    outline:none;
+}
+
+h3{
+    color:#ff4f96;
+}
+
+/* ==========================
+   SYMPTOM SELECTOR
+========================== */
+.symptom-selector{
+    position:relative;
+}
+
+#symptomSearch{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.6);
+}
+
+.dropdown{
+
+    max-height:250px;
+
+    overflow-y:auto;
+
+    margin-top:10px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.35);
+
+    backdrop-filter:blur(12px);
+}
+
+.dropdown-item{
+
+    padding:12px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.dropdown-item:hover{
+    background:rgba(255,255,255,0.45);
+}
+
+.selected-symptoms{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.tag{
+
+    background:#ff4f96;
+
+    color:white;
+
+    padding:8px 14px;
+
+    border-radius:25px;
+
+    font-size:14px;
+}
+
+.tag span{
+    margin-left:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* ==========================
+   RESULT BOX
+========================== */
+#result{
+
+    display:none;
+
+    margin-top:30px;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.3);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.15);
+}
+
+.assessment-title{
+    color:#ff4f96;
+    margin-bottom:20px;
+}
+
+.info-row{
+    margin:10px 0;
+}
+
+.risk{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    border-radius:25px;
+
+    color:white;
+
+    font-weight:bold;
+}
+
+.forecast{
+
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.35);
+}
+
+/* ==========================
+   DARK MODE
+========================== */
+.dark-mode{
+
+    background:
+    linear-gradient(
+        135deg,
+        #111827,
+        #1f2937
+    );
+}
+
+.dark-mode .container,
+.dark-mode .auth-card{
+
+    background:rgba(15,23,42,0.75);
+
+    color:white;
+}
+
+.dark-mode .header h1,
+.dark-mode .assessment-title,
+.dark-mode h3{
+    color:#d9ff8c;
+}
+
+.dark-mode .header p,
+.dark-mode .auth-card p{
+    color:#e5e7eb;
+}
+
+.dark-mode input{
+
+    background:#334155;
+
+    color:white;
+}
+
+.dark-mode .dropdown,
+.dark-mode .dropdown-item,
+.dark-mode .stat-card{
+
+    background:#1e293b;
+
+    color:white;
+}
+
+.dark-mode .dropdown-item:hover{
+    background:#334155;
+}
+
+.dark-mode #result{
+
+    background:#0f172a;
+
+    color:white;
+
+    border:2px solid #d9ff8c;
+}
+
+.dark-mode .forecast{
+
+    background:#1e293b;
+
+    color:white;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+@media(max-width:768px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .container{
+        margin:15px;
+        padding:20px;
+    }
+
+    .header-buttons{
+        flex-direction:column;
+    }
+
+    .glass-btn{
+        width:100%;
+    }
+
+    .auth-card{
+        padding:25px;
+    }
+}
