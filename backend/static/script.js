@@ -272,22 +272,46 @@ document
 
     const age =
         document.getElementById("age").value;
+        fetch("/predict", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body:
+        `name=${encodeURIComponent(name)}` +
+        `&age=${encodeURIComponent(age)}` +
+        `&symptoms=${encodeURIComponent(selectedSymptoms.join(", "))}`
+})
+.then(response => response.text())
+.then(data => {
+    console.log(data);
+})
+.catch(error => {
+    console.error(error);
+});
 
     const count =
         selectedSymptoms.length;
+let risk = "Low";
+let color = "#22c55e";
+let disease = "General Check-up Recommended";
 
-    let risk = "Low";
-    let color = "#22c55e";
+if (selectedSymptoms.includes("Chest Pain") ||
+    selectedSymptoms.includes("Shortness of Breath") ||
+    selectedSymptoms.includes("Loss of Consciousness")) {
 
-    if (count >= 4) {
-        risk = "Medium";
-        color = "#f59e0b";
-    }
+    risk = "High";
+    color = "#ef4444";
+    disease = "Possible Cardiac or Respiratory Emergency";
 
-    if (count >= 8) {
-        risk = "High";
-        color = "#ef4444";
-    }
+} else if (selectedSymptoms.includes("Fever") ||
+           selectedSymptoms.includes("Persistent Cough") ||
+           selectedSymptoms.includes("Severe Headache")) {
+
+    risk = "Medium";
+    color = "#f59e0b";
+    disease = "Possible Viral Infection";
+}
 
     const result =
         document.getElementById("result");
@@ -295,44 +319,44 @@ document
     result.style.display = "block";
 
     result.innerHTML = `
-        <h2 class="assessment-title">
-            📋 Health Assessment Report
-        </h2>
+    <h2 class="assessment-title">
+        📋 Health Assessment Report
+    </h2>
 
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Age:</strong> ${age}</p>
-        <p><strong>Symptoms:</strong> ${count}</p>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Age:</strong> ${age}</p>
+    <p><strong>Symptoms:</strong> ${count}</p>
 
-        <p>
-            <strong>Selected:</strong>
-            ${selectedSymptoms.join(", ")}
-        </p>
+    <p>
+        <strong>Selected:</strong>
+        ${selectedSymptoms.join(", ")}
+    </p>
 
-        <div class="risk"
-        style="background:${color}">
-            ${risk} Risk
-        </div>
+    <div class="risk" style="background:${color}">
+        ${risk} Risk
+    </div>
+    <p><strong>Likely Disease:</strong> ${disease}</p>
 
-        <div class="forecast">
+    <div class="forecast">
 
-            <h3>📈 7-Day Forecast</h3>
+        <h3>📈 7-Day Forecast</h3>
 
-            <p>Day 1: ${Math.min(count+1,10)}/10</p>
-            <p>Day 3: ${Math.min(count+2,10)}/10</p>
-            <p>Day 5: ${Math.min(count+1,10)}/10</p>
-            <p>Day 7: ${Math.max(count-1,1)}/10</p>
+        <p>Day 1: ${Math.min(count + 1, 10)}/10</p>
+        <p>Day 3: ${Math.min(count + 2, 10)}/10</p>
+        <p>Day 5: ${Math.min(count + 1, 10)}/10</p>
+        <p>Day 7: ${Math.max(count - 1, 1)}/10</p>
 
-            <h3>💡 Precautions</h3>
+        <h3>💡 Precautions</h3>
 
-            <ul>
-                <li>Stay hydrated</li>
-                <li>Get adequate rest</li>
-                <li>Monitor symptom progression</li>
-                <li>Consult a healthcare professional if symptoms worsen</li>
-            </ul>
+        <ul>
+            <li>Stay hydrated</li>
+            <li>Get adequate rest</li>
+            <li>Monitor symptom progression</li>
+            <li>Consult a healthcare professional if symptoms worsen</li>
+        </ul>
 
-        </div>
-    `;
+    </div>
+`;
 
    result.scrollIntoView({
     behavior: "smooth"
@@ -353,46 +377,51 @@ function getUserLocation() {
 
     navigator.geolocation.getCurrentPosition(
 
-        function(position){
+        function(position) {
 
-           window.userLatitude = position.coords.latitude;
-window.userLongitude = position.coords.longitude;
+            window.userLatitude = position.coords.latitude;
+            window.userLongitude = position.coords.longitude;
 
-console.log(window.userLatitude);
-console.log(window.userLongitude);
+            console.log("Latitude:", window.userLatitude);
+            console.log("Longitude:", window.userLongitude);
 
             alert("Location received successfully!");
 
-            console.log("Latitude:", latitude);
-            console.log("Longitude:", longitude);
             findNearbyDoctors();
 
         },
 
-        function(error){
+        function(error) {
 
-            if(error.code === error.PERMISSION_DENIED){
+            if (error.code === error.PERMISSION_DENIED) {
                 alert("You denied location permission.");
             }
-            else if(error.code === error.POSITION_UNAVAILABLE){
+            else if (error.code === error.POSITION_UNAVAILABLE) {
                 alert("Location unavailable.");
             }
-            else if(error.code === error.TIMEOUT){
+            else if (error.code === error.TIMEOUT) {
                 alert("Location request timed out.");
             }
-            else{
+            else {
                 alert("Unknown error.");
             }
 
+        },
+
+        {
+            enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 60000
         }
 
     );
 
 }
 async function findNearbyDoctors() {
+    alert("findNearbyDoctors() is running");
 
     const query = `
-    [out:json];
+    [out:json][timeout:25];
     (
       node["amenity"="hospital"](around:5000,${window.userLatitude},${window.userLongitude});
       node["amenity"="clinic"](around:5000,${window.userLatitude},${window.userLongitude});
@@ -404,24 +433,43 @@ async function findNearbyDoctors() {
     try {
 
         const response = await fetch(
-            "https://overpass-api.de/api/interpreter",
-            {
-                method: "POST",
-                body: query
-            }
-        );
+          "https://overpass-api.de/api/interpreter",
+    {
+             method: "POST",
+             headers: {
+              "Content-Type": "text/plain"
+        },
+             body: query
+    }
+);
 
-        const data = await response.json();
+        const text = await response.text();
+        console.log(text);
+
+        if (text.startsWith("<?xml")) {
+          alert("The API returned XML instead of JSON.");
+          return;
+}
+
+        const data = JSON.parse(text);
 
         console.log(data);
+        alert("Number of places found: " + data.elements.length);
+        let hospitalList = "<h3>🏥 Nearby Hospitals</h3><ul>";
 
-        alert("Found " + data.elements.length + " nearby hospitals/clinics.");
+        data.elements.slice(0, 5).forEach(place => {
+          hospitalList += `<li>${place.tags.name || "Unnamed Hospital"}</li>`;
+});
+
+        hospitalList += "</ul>";
+        
+        const result = document.getElementById("result");
+
+        result.innerHTML += hospitalList;
 
     } catch (err) {
-
-        console.error(err);
-        alert("Unable to fetch nearby doctors.");
-
-    }
+         console.error(err);
+         alert("Error: " + err.message);
+}
 
 }

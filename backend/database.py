@@ -11,6 +11,16 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL
 )
 """)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS symptom_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    symptoms TEXT,
+    prediction TEXT,
+    age INTEGER,
+    disease TEXT
+)
+""")
 
 connection.commit()
 

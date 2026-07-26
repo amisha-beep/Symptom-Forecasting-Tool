@@ -153,18 +153,19 @@
         </div>
 
         <!-- HEALTH FORM -->
-        <form id="symptomForm">
+        <form id="symptomForm" action="/predict" method="POST">
 
             <input
                 type="text"
                 id="name"
+                name="name"
                 placeholder="Full Name"
                 required
             >
-
             <input
                 type="number"
                 id="age"
+                name="age"
                 placeholder="Age"
                 required
             >
