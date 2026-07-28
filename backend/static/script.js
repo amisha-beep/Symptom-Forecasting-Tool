@@ -5,7 +5,7 @@
 const authPage = document.getElementById("authPage");
 const appContainer = document.getElementById("appContainer");
 
-const loginForm = document.getElementById("loginForm");
+const inForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 
 const showLogin = document.getElementById("showLogin");
@@ -385,8 +385,7 @@ function getUserLocation() {
             console.log("Latitude:", window.userLatitude);
             console.log("Longitude:", window.userLongitude);
 
-            alert("Location received successfully!");
-
+            
             findNearbyDoctors();
 
         },
@@ -410,7 +409,7 @@ function getUserLocation() {
 
         {
             enableHighAccuracy: false,
-            timeout: 5000,
+            timeout: 15000,
             maximumAge: 60000
         }
 
@@ -418,7 +417,10 @@ function getUserLocation() {
 
 }
 async function findNearbyDoctors() {
-    alert("findNearbyDoctors() is running");
+
+    const result = document.getElementById("result");
+    result.innerHTML += "<p id='loadingHospitals'>🔍 Finding nearby hospitals...</p>";
+    
 
     const query = `
     [out:json][timeout:25];
@@ -447,29 +449,76 @@ async function findNearbyDoctors() {
         console.log(text);
 
         if (text.startsWith("<?xml")) {
-          alert("The API returned XML instead of JSON.");
-          return;
+            console.log(text);
+            alert("The API returned XML instead of JSON. Check the browser console.");
+            return;
 }
 
         const data = JSON.parse(text);
 
         console.log(data);
-        alert("Number of places found: " + data.elements.length);
+        
         let hospitalList = "<h3>🏥 Nearby Hospitals</h3><ul>";
 
         data.elements.slice(0, 5).forEach(place => {
-          hospitalList += `<li>${place.tags.name || "Unnamed Hospital"}</li>`;
+          hospitalList += `
+          <div class="hospital-card">
+            <h4>🏥 ${place.tags.name || "Unnamed Hospital"}</h4>
+            <p>${place.tags["addr:street"] || "Address not available"}</p>
+            <p>${place.tags["addr:city"] || ""}</p>
+          </div>
+          `;
 });
 
         hospitalList += "</ul>";
         
-        const result = document.getElementById("result");
+        
 
+        document.getElementById("loadingHospitals").remove();
         result.innerHTML += hospitalList;
-
     } catch (err) {
-         console.error(err);
-         alert("Error: " + err.message);
+
+    const loading = document.getElementById("loadingHospitals");
+    if (loading) {
+        loading.remove();
+    }
+
+    console.error(err);
+    alert("Error: " + err.message);
+}
 }
 
+document.getElementById("logoutBtn").addEventListener("click", function () {
+
+    fetch("http://127.0.0.1:5000/logout")
+        .then(response => response.text())
+        .then(data => {
+
+           window.location.href = "/";
+        })
+        .catch(error => {
+            console.error(error);
+            alert("Logout failed.");
+        });
+
+});
+
+const themeToggle = document.getElementById("themeToggle");
+
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggle.textContent = "☀️ Light Mode";
 }
+
+themeToggle.addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        themeToggle.textContent = "☀️ Light Mode";
+        localStorage.setItem("theme", "dark");
+    } else {
+        themeToggle.textContent = "🌙 Dark Mode";
+        localStorage.setItem("theme", "light");
+    }
+});

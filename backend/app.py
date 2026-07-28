@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import sqlite3
 import requests
 
 app = Flask(__name__)
+app.secret_key="mysecretkey123"
 
 @app.route("/")
 def home():
@@ -37,8 +38,9 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
 
-    connection = sqlite3.connect("symptom.db")
-    cursor = connection.cursor()
+    conn = sqlite3.connect("symptom.db")
+    cursor = conn.cursor()
+
 
     cursor.execute(
         "SELECT * FROM users WHERE username=? AND password=?",
@@ -46,15 +48,17 @@ def login():
     )
 
     user = cursor.fetchone()
-    connection.close()
+
+    conn.close()
 
     if user:
+        session["username"] = username
         return "Login Successful"
     else:
-        return "Username or Password is incorrect"
+        return "Invalid Username or Password"
 @app.route("/predict", methods=["POST"])
 def predict():
-    name = request.form["name"]
+    username = session.get("username")
     age = request.form["age"]
     symptoms = request.form["symptoms"]
 
@@ -95,7 +99,7 @@ def predict():
      INSERT INTO symptom_history (username, symptoms, prediction, age, disease)
      VALUES (?, ?, ?, ?, ?)
      """,
-     (name, symptoms, prediction, age, disease)
+     (username, symptoms, prediction, age, disease)
 )
 
     connection.commit()
@@ -126,5 +130,10 @@ def nearby_doctors():
     )
 
     return response.text, 200, {"Content-Type": "application/json"}
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
+
 if __name__ == "__main__":
     app.run(debug=True)
