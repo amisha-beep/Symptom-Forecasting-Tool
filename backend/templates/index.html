@@ -8,19 +8,19 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
 
     <!-- Floating Medical Icons -->
     <div class="floating-icon stethoscope">🩺</div>
     <div class="floating-icon syringe">💉</div>
-    <div class="floating-icon heart">❤️</div>
+    
 
     <!-- AUTHENTICATION PAGE -->
     <div class="auth-page" id="authPage">
 
         <div class="auth-card">
 
-            <h1>🌸 Symptom Forecast </h1>
+            <h1> Symptom Forecast </h1>
             <p>AI-Powered Health Monitoring Dashboard</p>
 
             <!-- Tabs -->
@@ -112,7 +112,7 @@
                 Predict symptom severity and monitor health trends
             </p>
 
-            <div class="header-buttons">
+            <div class="header-buttons" style="display: flex; gap: 10px; align-items: center;">
 
                 <button
                     id="themeToggle"
@@ -120,6 +120,13 @@
                     type="button">
                     🌙 Dark Mode
                 </button>
+             <a href="/history" style="text-decoration: none; display: inline-block;">
+        <button
+            class="glass-btn"
+            type="button">
+            📋 View My History
+        </button>
+    </a>
 
                 <button
                     id="logoutBtn"
@@ -127,6 +134,7 @@
                     type="button">
                     🚪 Logout
                 </button>
+            
 
             </div>
 

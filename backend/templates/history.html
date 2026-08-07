@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Symptom History</title>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 30px; background-color: #f4f4f4;">
+    <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+
+<h1 style="text-align: center;">My Symptom History</h1>
+<hr>
+    <table border="1" cellpadding="10" cellspacing="0"
+       style="margin: auto; width: 80%; border-collapse: collapse; text-align: center;">
+        <tr style="background-color: #4CAF50; color: white; font-size: 18px;">
+    <th>Age</th>
+    <th>Symptoms</th>
+    <th>Prediction</th>
+    <th>Disease</th>
+</tr>
+        {% for record in history %}
+        <tr style="background-color: #f9f9f9;">
+            <td>{{ record.age }}</td>
+            <td>{{ record.symptoms }}</td>
+            <td><strong>{{ record.prediction }}</strong></td>
+            <td style="color: #0066cc;">{{ record.disease }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+
+<div style="text-align: center; margin-top: 20px;">
+
+    <a href="/" style="margin-right: 10px;">
+        <button style="padding:10px 20px; background-color:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Back to Home
+        </button>
+    </a>
+
+    <a href="/logout">
+        <button style="padding:10px 20px; background-color:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Logout
+        </button>
+    </a>
+
+</div>
+    </div>
+</body>
+</html>
