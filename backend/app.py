@@ -160,17 +160,21 @@ def nearby_doctors():
 
         response = requests.post(
             "https://overpass-api.de/api/interpreter",
-            data=query,
+            data={"data": query},
+            headers={
+                "User-Agent": "SymptomForecastingTool/1.0"
+            },
             timeout=20
         )
 
         response.raise_for_status()
 
-        return response.json()
+        return response.text, 200, {
+            "Content-Type": "application/json"
+        }
 
     except Exception as e:
         return {"error": str(e)}, 500
-
 @app.route("/logout")
 def logout():
     if "username" in session:
