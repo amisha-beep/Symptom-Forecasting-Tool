@@ -139,29 +139,37 @@ def history():
     return render_template("history.html", history=history)
 @app.route("/nearby-doctors", methods=["POST"])
 def nearby_doctors():
+    try:
+        data = request.get_json()
 
-    data = request.get_json()
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
 
-    latitude = data["latitude"]
-    longitude = data["longitude"]
+        if latitude is None or longitude is None:
+            return {"error": "Missing latitude or longitude"}, 400
 
-    query = f"""
-    [out:json];
-    (
-      node["amenity"="hospital"](around:5000,{latitude},{longitude});
-      node["amenity"="clinic"](around:5000,{latitude},{longitude});
-      node["healthcare"="doctor"](around:5000,{latitude},{longitude});
-    );
-    out body;
-    """
+        query = f"""
+        [out:json];
+        (
+          node["amenity"="hospital"](around:5000,{latitude},{longitude});
+          node["amenity"="clinic"](around:5000,{latitude},{longitude});
+          node["healthcare"="doctor"](around:5000,{latitude},{longitude});
+        );
+        out body;
+        """
 
-    response = requests.post(
-        "https://overpass-api.de/api/interpreter",
-        data=query
-    )
+        response = requests.post(
+            "https://overpass-api.de/api/interpreter",
+            data=query,
+            timeout=20
+        )
 
-    return response.text, 200, {"Content-Type": "application/json"}
+        response.raise_for_status()
 
+        return response.json()
+
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @app.route("/logout")
 def logout():

@@ -434,14 +434,15 @@ async function findNearbyDoctors() {
 
     try {
 
-        const response = await fetch(
-          "https://overpass-api.de/api/interpreter",
-    {
+       const response = await fetch("/nearby-doctors", {
              method: "POST",
              headers: {
-              "Content-Type": "text/plain"
-        },
-             body: query
+              "Content-Type": "application/json"
+},
+             body: JSON.stringify({
+               latitude: window.userLatitude,
+               longitude: window.userLongitude
+})
     }
 );
 
