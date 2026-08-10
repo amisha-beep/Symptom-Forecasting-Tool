@@ -447,7 +447,10 @@ async function findNearbyDoctors() {
 );
 
         const text = await response.text();
+
+        console.log("Response:");
         console.log(text);
+        
 
         if (text.startsWith("<?xml")) {
             console.log(text);
@@ -458,10 +461,14 @@ async function findNearbyDoctors() {
         const data = JSON.parse(text);
 
         console.log(data);
-        
-        let hospitalList = "<h3>🏥 Nearby Hospitals</h3><ul>";
 
-        data.elements.slice(0, 5).forEach(place => {
+          if (!data.elements) {
+         alert("No hospitals found or Overpass API returned an error.");
+         console.log(data);
+         return;
+}
+
+       data.elements.slice(0,5).forEach(place => {
           hospitalList += `
           <div class="hospital-card">
             <h4>🏥 ${place.tags.name || "Unnamed Hospital"}</h4>
