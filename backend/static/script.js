@@ -460,12 +460,18 @@ async function findNearbyDoctors() {
 
         const data = JSON.parse(text);
 
-        console.log(data);
+console.log("Backend returned:");
+console.log(data);
 
-          if (!data.elements) {
-         alert("No hospitals found or Overpass API returned an error.");
-         console.log(data);
-         return;
+if (data.error) {
+    alert(data.error);
+    return;
+}
+
+if (!data.elements || data.elements.length === 0) {
+    alert("No hospitals found.");
+    console.log(data);
+    return;
 }
 
        data.elements.slice(0,5).forEach(place => {
