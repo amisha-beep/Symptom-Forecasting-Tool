@@ -446,11 +446,11 @@ async function findNearbyDoctors() {
     }
 );
 
-        const text = await response.text();
+       const text = await response.text();
 
+        console.log("Status:", response.status);
         console.log("Response:");
         console.log(text);
-        
 
         if (text.startsWith("<?xml")) {
             console.log(text);
