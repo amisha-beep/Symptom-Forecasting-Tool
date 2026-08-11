@@ -473,6 +473,7 @@ if (!data.elements || data.elements.length === 0) {
     console.log(data);
     return;
 }
+       let hospitalList = "<h3>🏥 Nearby Hospitals</h3>";
 
        data.elements.slice(0,5).forEach(place => {
           hospitalList += `
@@ -483,7 +484,7 @@ if (!data.elements || data.elements.length === 0) {
           </div>
           `;
 });
-
+        result.innerHTML += hospitalList;
         hospitalList += "</ul>";
         
         
