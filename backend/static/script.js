@@ -490,7 +490,7 @@ if (!data.elements || data.elements.length === 0) {
         
 
         document.getElementById("loadingHospitals").remove();
-        result.innerHTML += hospitalList;
+        
     } catch (err) {
 
     const loading = document.getElementById("loadingHospitals");
