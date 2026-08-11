@@ -475,14 +475,27 @@ if (!data.elements || data.elements.length === 0) {
 }
        let hospitalList = "<h3>🏥 Nearby Hospitals</h3>";
 
-       data.elements.slice(0,5).forEach(place => {
-          hospitalList += `
-          <div class="hospital-card">
-            <h4>🏥 ${place.tags.name || "Unnamed Hospital"}</h4>
-            <p>${place.tags["addr:street"] || "Address not available"}</p>
-            <p>${place.tags["addr:city"] || ""}</p>
-          </div>
-          `;
+       data.elements.slice(0, 5).forEach(place => {
+
+    const address = [
+        place.tags["addr:housenumber"],
+        place.tags["addr:street"],
+        place.tags["addr:suburb"],
+        place.tags["addr:city"],
+        place.tags["addr:state"]
+    ].filter(Boolean).join(", ");
+
+    hospitalList += `
+    <div class="hospital-card">
+        <h4>🏥 ${place.tags.name || "Unnamed Hospital"}</h4>
+
+        <p><strong>📍 Address:</strong> ${address || "Address not available"}</p>
+
+        <a href="https://www.google.com/maps?q=${place.lat},${place.lon}" target="_blank">
+            📍 View on Google Maps
+        </a>
+    </div>
+    `;
 });
         result.innerHTML += hospitalList;
         hospitalList += "</ul>";
