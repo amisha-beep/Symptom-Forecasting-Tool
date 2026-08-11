@@ -149,17 +149,15 @@ def nearby_doctors():
             return {"error": "Missing latitude or longitude"}, 400
 
         query = f"""
-        [out:json];
-        (
-          node["amenity"="hospital"](around:2000,{latitude},{longitude});
-          node["amenity"="clinic"](around:2000,{latitude},{longitude});
-          node["healthcare"="doctor"](around:2000,{latitude},{longitude});
-        );
-        out body;
-        """
+[out:json][timeout:10];
+(
+  node["amenity"="hospital"](around:1000,{latitude},{longitude});
+);
+out center 10;
+"""
 
         response = requests.post(
-            "https://overpass.kumi.systems/api/interpreter",
+           "https://lz4.overpass-api.de/api/interpreter",
             data={"data": query},
             headers={
                 "User-Agent": "SymptomForecastingTool/1.0"
@@ -167,8 +165,10 @@ def nearby_doctors():
             timeout=30
         )
 
-        response.raise_for_status()
-
+        if response.status_code != 200:
+                 return {
+        "error": f"Overpass returned {response.status_code}"
+    }, response.status_code
         return response.text, 200, {
             "Content-Type": "application/json"
         }
