@@ -151,20 +151,20 @@ def nearby_doctors():
         query = f"""
         [out:json];
         (
-          node["amenity"="hospital"](around:5000,{latitude},{longitude});
-          node["amenity"="clinic"](around:5000,{latitude},{longitude});
-          node["healthcare"="doctor"](around:5000,{latitude},{longitude});
+          node["amenity"="hospital"](around:2000,{latitude},{longitude});
+          node["amenity"="clinic"](around:2000,{latitude},{longitude});
+          node["healthcare"="doctor"](around:2000,{latitude},{longitude});
         );
         out body;
         """
 
         response = requests.post(
-            "https://overpass-api.de/api/interpreter",
+            "https://overpass.kumi.systems/api/interpreter",
             data={"data": query},
             headers={
                 "User-Agent": "SymptomForecastingTool/1.0"
             },
-            timeout=20
+            timeout=30
         )
 
         response.raise_for_status()
