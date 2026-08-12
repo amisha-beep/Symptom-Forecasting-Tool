@@ -492,7 +492,7 @@ if (!data.elements || data.elements.length === 0) {
         <p><strong>📍 Address:</strong> ${address || "Address not available"}</p>
 
         <a href="https://www.google.com/maps?q=${place.lat},${place.lon}" target="_blank">
-            📍 View on Google Maps
+            View on Google Maps
         </a>
     </div>
     `;
