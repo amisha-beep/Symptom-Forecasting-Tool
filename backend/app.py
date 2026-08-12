@@ -156,44 +156,41 @@ def nearby_doctors():
 out center 10;
 """
 
-      servers = [
-    "https://lz4.overpass-api.de/api/interpreter",
-    "https://overpass.kumi.systems/api/interpreter",
-    "https://overpass.openstreetmap.ru/api/interpreter"
-]
+        servers = [
+            "https://lz4.overpass-api.de/api/interpreter",
+            "https://overpass.kumi.systems/api/interpreter",
+            "https://overpass.openstreetmap.ru/api/interpreter"
+        ]
 
-response = None
+        response = None
 
-for server in servers:
-    try:
-        response = requests.post(
-            server,
-            data={"data": query},
-            headers={"User-Agent": "SymptomForecastingTool/1.0"},
-            timeout=15
-        )
+        for server in servers:
+            try:
+                response = requests.post(
+                    server,
+                    data={"data": query},
+                    headers={
+                        "User-Agent": "SymptomForecastingTool/1.0"
+                    },
+                    timeout=15
+                )
 
-        if response.status_code == 200:
-            break
-    except Exception:
-        continue
+                if response.status_code == 200:
+                    return response.text, 200, {
+                        "Content-Type": "application/json"
+                    }
 
-if response is None or response.status_code != 200:
-    return {"error": "All Overpass servers are unavailable."}, 503
+            except Exception:
+                continue
 
-return response.text, 200, {
-    "Content-Type": "application/json"
-}
-        if response.status_code != 200:
-                 return {
-        "error": f"Overpass returned {response.status_code}"
-    }, response.status_code
-        return response.text, 200, {
-            "Content-Type": "application/json"
-        }
+        return {
+            "error": "All Overpass servers are unavailable."
+        }, 503
 
     except Exception as e:
         return {"error": str(e)}, 500
+
+        
 @app.route("/logout")
 def logout():
     if "username" in session:
