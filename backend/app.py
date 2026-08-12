@@ -156,15 +156,34 @@ def nearby_doctors():
 out center 10;
 """
 
+      servers = [
+    "https://lz4.overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.openstreetmap.ru/api/interpreter"
+]
+
+response = None
+
+for server in servers:
+    try:
         response = requests.post(
-           "https://lz4.overpass-api.de/api/interpreter",
+            server,
             data={"data": query},
-            headers={
-                "User-Agent": "SymptomForecastingTool/1.0"
-            },
-            timeout=30
+            headers={"User-Agent": "SymptomForecastingTool/1.0"},
+            timeout=15
         )
 
+        if response.status_code == 200:
+            break
+    except Exception:
+        continue
+
+if response is None or response.status_code != 200:
+    return {"error": "All Overpass servers are unavailable."}, 503
+
+return response.text, 200, {
+    "Content-Type": "application/json"
+}
         if response.status_code != 200:
                  return {
         "error": f"Overpass returned {response.status_code}"
